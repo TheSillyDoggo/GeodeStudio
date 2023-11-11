@@ -1,0 +1,324 @@
+<Window xmlns="https://github.com/avaloniaui"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+xmlns:cc="using:CustomControls"
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+MinWidth="1424"
+MinHeight="759"
+x:Class="GeodeIDE.ProjectWindow"
+WindowStartupLocation="CenterScreen"
+RequestedThemeVariant="Dark"
+Icon="/Assets/icon.png"
+Background="#222222"
+ExtendClientAreaToDecorationsHint="True"
+PointerReleased="OnPointerReleased"
+Title="Geode Studio">
+
+	<Panel Name="MainPanel" Background="#111111" Margin="0, 30, 0 0" SizeChanged="OnResize">
+
+		<Panel Name="Assets" IsVisible="False">
+			<Image Name="AchievementSprite" Source="/Assets/Achievement.png"></Image>
+			<Image Name="QuestSprite" Source="/Assets/Quest.png"></Image>
+			<Image Name="FolderIcon" Source="/Assets/FolderIcon.png"></Image>
+			<Image Name="ImageIcon" Source="/Assets/ImageIcon.png"></Image>
+			<Image Name="AchievementIcon" Source="/Assets/AchievementIcon.png"></Image>
+			<Image Name="MissingIcon" Source="/Assets/MissingIcon.png"></Image>
+			<Image Name="LayerIcon" Source="/Assets/LayerIcon.png"></Image>
+			<Image Name="AnchorSprite" Source="/Assets/Anchor.png"></Image>
+		</Panel>
+		
+		<Panel Name="HomePanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+
+			<Panel.ContextMenu>
+				<ContextMenu>
+					<MenuItem Header="Create">
+						<MenuItem Header="Folder" ToolTip.Tip="If you don't know what a folder is you should not be using a computer" Click="CreateFolder"/>
+						<MenuItem Header="Texture" ToolTip.Tip="A texture is an image that you can use in-game" Click="CreateTexture"/>
+						<MenuItem Header="Scene" ToolTip.Tip="A Scene is an area of the game which contains objects"/>
+						<MenuItem Header="Layer" ToolTip.Tip="A Layer is like a scene but there are multiple. Like the Pause menu" Click="CreateCCLayer"/>
+						<MenuItem Header="Layer Override" ToolTip.Tip="This lets you override a Layer to add new Nodes"/>
+						<MenuItem Header="Achievement" ToolTip.Tip="An achievement is something you can unlock. You choose the reward and how you unlock it" Click="CreateAchievement"/>
+						<MenuItem Header="Font" ToolTip.Tip="It's a font. It can make text look funny or fancy"/>
+						<MenuItem Header="Overlay" ToolTip.Tip="An overlay is a shape that can be onscreen at all times. Like Mega Hack Pro"/>
+						<MenuItem Header="Icon" ToolTip.Tip="It's... an icon. You should know this"/>
+						<MenuItem Header="Object (GDPS Only)" ToolTip.Tip="It's an in-game object such as a block or spike. Use this ONLY on GDPS's that you own"/>
+						<MenuItem Header="Trigger (GDPS Only)" ToolTip.Tip="It's an in-game trigger with a programmable action. Use this ONLY on GDPS's that you own"/>
+					</MenuItem>
+				
+					<MenuItem Header="Shit"/>
+					<MenuItem Header="Other Shit"/>
+				</ContextMenu>
+			</Panel.ContextMenu>			
+
+			
+		
+			<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" AllowAutoHide="False">
+				<Panel Name="Home" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+					<StackPanel Name="ButtonsStack">
+						<UniformGrid Name="Buttons" Columns="0" Rows="0" Margin="50,40,10,10"></UniformGrid>
+					</StackPanel>
+					<Label Name="NoElements" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" HorizontalContentAlignment="Center">Nothing here yet :(</Label>
+				</Panel>
+			</ScrollViewer>
+		
+			<Panel Name="LeftBar" Background="#222222" Margin="0,0,100,0">
+			
+			</Panel>
+
+			<Panel Name="TopBar" Background="#222222" Margin="0,0,0,100">
+				<Label Name="DirectoryName" Opacity="100" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontSize="12" Margin="5,5,5,5">Root/</Label>
+				<Button Opacity="0" HorizontalAlignment="Left" Width="35" Margin="5,5,55,5" Click="GoRoot">Root</Button>
+				<Button Opacity="0" HorizontalAlignment="Left" Width="200" Margin="40,5,55,5" Click="GoBack">Root</Button>
+			</Panel>
+
+		</Panel>
+
+		<Panel Name="AchievementPanel" Margin="0,0,0,0" IsVisible="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+			<Panel>
+				<Label Content="Edit Achievement" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalAlignment="Stretch" FontSize="24" Margin="0,20,0,0"></Label>
+				<Border Name="AchievementPreview" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,100,0,0" Background="Black" CornerRadius="20,20,20,20">
+					<Image Name="AchievementImage" Source="/Assets/Achievement.png" Margin="30,30,30,30" Stretch="Fill"></Image>
+				</Border>
+				
+				<Panel Name="ImageAE" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,100,0,0"></Panel>
+
+				<Panel HorizontalAlignment="Center" VerticalAlignment="Stretch" Margin="80,400,0,0">
+					<Label Margin="-155,4,50,0" Content="Title: " FontSize="18" HorizontalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Top" VerticalAlignment="Top"></Label>
+					<TextBox Name="TitleInput" VerticalContentAlignment="Center" VerticalAlignment="Top" Margin="200,3,0,0" Width="250" Height="10" Watermark="Search Projects" TextChanged="AchievementText"></TextBox>
+				</Panel>
+
+				<Panel HorizontalAlignment="Center" VerticalAlignment="Stretch" Margin="80,450,0,0">
+					<Label Margin="-218,4,50,0" Content="Description: " FontSize="18" HorizontalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Top" VerticalAlignment="Top"></Label>
+					<TextBox Name="DescriptionInput" VerticalContentAlignment="Center" VerticalAlignment="Top" Margin="200,3,0,0" Width="250" Height="10" Watermark="Search Projects" TextChanged="AchievementText"></TextBox>
+				</Panel>
+
+				<Panel HorizontalAlignment="Center" VerticalAlignment="Stretch" Margin="80,500,0,0">
+					<Label Margin="-155,4,50,0" Content="Image: " FontSize="18" HorizontalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Top" VerticalAlignment="Top"></Label>
+					
+					<Button HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Top" Margin="135,3,0,0" Width="120" Height="30">Select Image</Button>
+					<ToggleButton Name="BlueBtn" HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Top" Margin="268,3,-10,0" Width="60" Height="30" Click="OnBlueAch">Blue</ToggleButton>
+				</Panel>
+
+				<Panel HorizontalAlignment="Center" VerticalAlignment="Stretch" Margin="80,550,0,0">
+					<Label Margin="-245,0,50,0" Content="Unlock Method: " FontSize="18" HorizontalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Top" VerticalAlignment="Top"></Label>
+					<TextBox Name="CRInput" VerticalContentAlignment="Center" VerticalAlignment="Top" Margin="200,3,0,0" Width="250" Height="10" Watermark="Search Projects" TextChanged="AchievementText"></TextBox>
+				</Panel>
+
+				<Panel HorizontalAlignment="Center" VerticalAlignment="Stretch" Margin="80,600,0,0">
+					<Label Margin="-245,0,50,0" Content="Reward: " FontSize="18" HorizontalAlignment="Center" HorizontalContentAlignment="Right" VerticalContentAlignment="Top" VerticalAlignment="Top"></Label>
+					<TextBox Name="EAInput" VerticalContentAlignment="Center" VerticalAlignment="Top" Margin="200,3,0,0" Width="250" Height="10" Watermark="Search Projects" TextChanged="AchievementText"></TextBox>
+				</Panel>
+
+				<Panel HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,680,0,20">
+					<Button Click="OnCancelAch" Width="150" Height="40" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="-165,0,0,0">Cancel</Button>
+					<Button Click="OnSaveAch" Width="150" Height="40" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="165,0,0,0">Save</Button>
+				</Panel>
+			</Panel>
+		</Panel>
+
+		<Panel Name="LayerPanel" Margin="0,0,0,0" IsVisible="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+			<Panel>
+
+				<cc:CCLayerPreview HorizontalAlignment="Center" VerticalAlignment="Top" Width="854" Height="480" Margin="278,50,278,0" ZIndex="-1"></cc:CCLayerPreview>
+				
+				<Panel Name="Hierarchy" HorizontalAlignment="Left" Width="278" VerticalAlignment="Stretch" Margin="0,30,0,0" ZIndex="12" Background="#111111">
+					
+					<Panel.ContextMenu>
+						<ContextMenu>
+							<MenuItem Header="Create">
+								<MenuItem Header="Node" ToolTip.Tip="A Node is a gameobject. You can click it to change its sprite in the Properties panel on the right" Click="CreateNode"/>
+								<MenuItem Header="CCMenu" ToolTip.Tip="A CCMenu is a parent of interactable menu items. Every child that is a type of button can be selected by dragging the mouse from one to another like most grouped buttons" Click="CreateFolder"/>
+								<MenuItem Header="Button" ToolTip.Tip="A Button is a menu item. The game WILL crash if you don't make this a child of a CCMenu" Click="CreateFolder"/>
+								<MenuItem Header="Toggler" ToolTip.Tip="It's a button but you can toggle it on and off. The game WILL crash if you don't make this a child of a CCMenu" Click="CreateFolder"/>
+								<MenuItem Header="Label" ToolTip.Tip="words. The game WILL crash if you don't make this a child of a CCMenu" Click="CreateFolder"/>
+								<MenuItem Header="Slider" ToolTip.Tip="it go slidey slidey to the other end" Click="CreateFolder"/>
+								<MenuItem Header="Input Field" ToolTip.Tip="tell to me thou struggles" Click="CreateFolder"/>
+								<MenuItem Header="List" ToolTip.Tip="lists stuff. you find them everywhere" Click="CreateFolder"/>
+								<MenuItem Header="BoomScrollLayer" ToolTip.Tip="I really don't know what to call this so I'm naming it by its internal name" Click="CreateNode"/>
+							</MenuItem>
+
+							<MenuItem Header="Save"/>
+							<MenuItem Header="Close"/>
+						</ContextMenu>
+					</Panel.ContextMenu>
+					
+					<ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Visible">
+						<Panel Name="HierarchyScrollviewer" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+							<cc:Hierarchy Name="Hierarch" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0" ZIndex="1" Width="278" ChangedSelection="HierarchySelectionChanged"></cc:Hierarchy>
+						</Panel>
+					</ScrollViewer>
+				</Panel>
+
+				<Panel Name="Properties" HorizontalAlignment="Right" Width="278" VerticalAlignment="Stretch" Margin="0,30,0,0" Background="#111111">
+					<ScrollViewer Name="PropertiesPanel">
+						<Panel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+							<TextBox Name="NodeName" VerticalAlignment="Top" HorizontalAlignment="Stretch" Height="20" Margin="40, 10, 10, 10" Watermark="Node Name" TextChanged="RefreshLayerInput"></TextBox>
+							<CheckBox Name="NodeEnabled" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="10,10,5,5" IsChecked="True" Click="RefreshNodeButton"></CheckBox>
+
+							<Image Name="AnchorIcon" Source="/Assets/MissingIcon.png" Stretch="Fill" Width="60" Height="60" Margin="10,60,10,10" HorizontalAlignment="Left" VerticalAlignment="Top"></Image>
+							<Button HorizontalAlignment="Left" VerticalAlignment="Top" Width="60" Height="60" Margin="10,60,10,10" Click="ShowAnchorButton" Opacity="0"></Button>
+							<Label HorizontalAlignment="Left" HorizontalContentAlignment="Center" VerticalAlignment="Top" Margin="5,120,35,10">Alignment</Label>
+
+							<Panel Name="AnchorPanel" IsVisible="False" Width="180" Height="240" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,60,10,10" ZIndex="2">
+								<Image Width="180" Height="240" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0" Source="/Assets/Anchor.png"></Image>
+
+								<Button Name="ANC1" Width="60" Height="60" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0" Click="OnAnchorClick" Opacity="0"></Button>
+								<Button Name="ANC2" Width="60" Height="60" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,0,0,0" Click="OnAnchorClick" Opacity="0"></Button>
+								<Button Name="ANC3" Width="60" Height="60" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="120,0,0,0" Click="OnAnchorClick" Opacity="0"></Button>
+								
+								<Button Name="ANC4" Width="60" Height="60" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,60,0,0" Click="OnAnchorClick" Opacity="0"></Button>
+								<Button Name="ANC5" Width="60" Height="60" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,60,0,0" Click="OnAnchorClick" Opacity="0"></Button>
+								<Button Name="ANC6" Width="60" Height="60" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="120,60,0,0" Click="OnAnchorClick" Opacity="0"></Button>
+								
+								<Button Name="ANC7" Width="60" Height="60" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,120,0,0" Click="OnAnchorClick" Opacity="0"></Button>
+								<Button Name="ANC8" Width="60" Height="60" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="60,120,0,0" Click="OnAnchorClick" Opacity="0"></Button>
+								<Button Name="ANC9" Width="60" Height="60" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="120,120,0,0" Click="OnAnchorClick" Opacity="0"></Button>
+
+								<Button Name="ANC10" Width="60" Height="60" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,180,0,0" Click="OnAnchorClick" Opacity="0"></Button>
+							</Panel>
+
+							<Label Name="L" HorizontalAlignment="Right" HorizontalContentAlignment="Center" VerticalAlignment="Top" Margin="10,60,120,10">X Pos</Label>
+							<Label Name="T" HorizontalAlignment="Right" HorizontalContentAlignment="Center" VerticalAlignment="Top" Margin="10,60,35,10">Y Pos</Label>
+							<TextBox Name="XIn" MaxLength="5" VerticalAlignment="Top" HorizontalAlignment="Right" Width="30" Margin="10, 85, 110, 10" TextChanged="RefreshLayerInput" Watermark="X Pos"></TextBox>
+							<TextBox Name="YIn" MaxLength="5" VerticalAlignment="Top" HorizontalAlignment="Right" Width="30" Margin="10, 85, 23, 10" TextChanged="RefreshLayerInput" Watermark="Y Pos"></TextBox>
+
+							<Label Name="R" HorizontalAlignment="Right" HorizontalContentAlignment="Center" VerticalAlignment="Top" Margin="10,120,120,10">Width</Label>
+							<Label Name="B" HorizontalAlignment="Right" HorizontalContentAlignment="Center" VerticalAlignment="Top" Margin="10,120,32,10">Height</Label>
+							<TextBox Name="WIn" MaxLength="5" VerticalAlignment="Top" HorizontalAlignment="Right" Width="30" Margin="10, 145, 110, 10" TextChanged="RefreshLayerInput" Watermark="Width"></TextBox>
+							<TextBox Name="HIn" MaxLength="5" VerticalAlignment="Top" HorizontalAlignment="Right" Width="30" Margin="10, 145, 23, 10" TextChanged="RefreshLayerInput" Watermark="Height"></TextBox>
+
+							<Label Name="SX" HorizontalAlignment="Right" HorizontalContentAlignment="Center" VerticalAlignment="Top" Margin="10,180,120,10">Scale X</Label>
+							<Label Name="SY" HorizontalAlignment="Right" HorizontalContentAlignment="Center" VerticalAlignment="Top" Margin="10,180,32,10">Scale Y</Label>
+							<TextBox Name="SXIn" MaxLength="5" VerticalAlignment="Top" HorizontalAlignment="Right" Width="30" Margin="10, 205, 110, 10" TextChanged="RefreshLayerInput" Watermark="Scale X"></TextBox>
+							<TextBox Name="SYIn" MaxLength="5" VerticalAlignment="Top" HorizontalAlignment="Right" Width="30" Margin="10, 205, 23, 10" TextChanged="RefreshLayerInput" Watermark="Scale Y"></TextBox>
+
+							<Label Name="Rot" HorizontalAlignment="Right" HorizontalContentAlignment="Center" VerticalAlignment="Top" Margin="10,180,220,10">Rot</Label>
+							<TextBox Name="RotIn" MaxLength="5" VerticalAlignment="Top" HorizontalAlignment="Right" Width="30" Margin="10, 205, 200, 10" TextChanged="RefreshLayerInput" Watermark="Rot"></TextBox>
+
+							<Panel HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,260,0,0">
+								<Panel HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="30" Opacity="100" Background="#222222">
+									<Label HorizontalContentAlignment="Left" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,0,0,0">Rendering</Label>
+								</Panel>
+
+								<TextBox Name="AlphaInput" Width="60" Height="30" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="20,150,20,0" TextChanged="RefreshLayerInput" ToolTip.Tip="The transparency of the object. A value between 0 and 255"></TextBox>
+								<Label Width="80" FontSize="10" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="10,180,10,10">Alpha</Label>
+
+								<Panel Width="60" Height="30" Background="White" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,150,0,0" ToolTip.Tip="The colour of the object"></Panel>
+								<Label Width="80" FontSize="10" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,180,10,10">Colour</Label>
+								
+								<Panel Name="NodePanel">
+									
+									<Panel Width="80" Height="80" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,40,10,10" Background="Black" ToolTip.Tip="The sprite this object uses">
+										<Image Name="LayerImagePreview" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stretch="Uniform" IsHitTestVisible="False"></Image>
+									</Panel>
+									<Label Name="SpriteName" Width="80" FontSize="10" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,120,10,10" ToolTip.Tip="The name of the sprite">sex frfrfrfr</Label>
+									<Button Margin="100,45,10,10" HorizontalAlignment="Stretch" VerticalAlignment="Top" Click="ChooseResourceButton" ToolTip.Tip="Choose the object's sprite">Choose Sprite</Button>
+									<Button Margin="100,85,10,10" HorizontalAlignment="Stretch" VerticalAlignment="Top" Click="SpriteSizeButton" ToolTip.Tip="Sets the object's size to the sprite's size">Size to Sprite Size</Button>
+
+									<StackPanel Width="80" Height="30" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,150,0,0">
+										<ComboBox SelectedIndex="0" FontSize="10" HorizontalContentAlignment="Left" ToolTip.Tip="The mode in which sprites render">
+
+											<ComboBoxItem FontSize="14" ToolTip.Tip="Simple sprite. Can be stretched and such">Simple</ComboBoxItem>
+											<ComboBoxItem FontSize="14" ToolTip.Tip="DOES NOT SHOW IN EDITOR! Splits the sprite into 9 sections to create sides and corners">9 Sprite</ComboBoxItem>
+										
+										</ComboBox>
+									</StackPanel>
+									<Label Width="80" FontSize="10" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10,180,10,10">Sprite Mode</Label>
+									
+								</Panel>
+								
+								<Panel Name="LabelPanel">
+
+									<TextBox Name="LabelText" Height="30" Width="168" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="60,46,10,0" TextChanged="RefreshLayerInput"></TextBox>
+									<Label Width="80" FontSize="14" HorizontalContentAlignment="Left" VerticalContentAlignment="Top" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,50,10,10">Text: </Label>
+
+									<Button Margin="100,85,10,10" HorizontalAlignment="Stretch" VerticalAlignment="Top" Click="ChooseFontButton">Choose Font</Button>
+									<Label Width="80" FontSize="14" HorizontalContentAlignment="Left" VerticalContentAlignment="Top" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,90,10,10">Font: </Label>
+									
+								</Panel>
+							</Panel>
+
+							<Panel HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,470,0,0">
+								<Panel HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="30" Opacity="100" Background="#222222">
+									<Label HorizontalContentAlignment="Left" VerticalContentAlignment="Center" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5,0,0,0">Node Behaviour</Label>
+								</Panel>
+
+								<StackPanel HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,40,10,10">
+									<ComboBox SelectedIndex="0">
+
+										<ComboBoxItem>Node</ComboBoxItem>
+										<ComboBoxItem>CCMenu</ComboBoxItem>
+										<ComboBoxItem>Button</ComboBoxItem>
+										<ComboBoxItem>Toggler</ComboBoxItem>
+										<ComboBoxItem>Label</ComboBoxItem>
+										<ComboBoxItem>Slider</ComboBoxItem>
+										<ComboBoxItem>Input Field</ComboBoxItem>
+										
+									</ComboBox>
+								</StackPanel>
+								
+								
+							</Panel>
+							
+						</Panel>
+					</ScrollViewer>
+
+					<TextBlock Width="600" Name="PropertiesHelp" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center">This is the layer options :3</TextBlock>
+				</Panel>
+
+				<Panel HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="50" Margin="278,0,278,0" Background="#222222"></Panel>
+				<Panel HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="278,530,278,0" Background="#222222"></Panel>
+				<Panel Name="BG1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="278,0,278,0" Background="#222222"></Panel>
+				<Panel Name="BG2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="278,0,278,0" Background="#222222"></Panel>
+				
+				<Border HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="30" Margin="0,0,0,0" Background="#222222"></Border>
+				<Label Opacity="100" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" VerticalAlignment="Top" VerticalContentAlignment="Center" FontSize="12" Margin="5,5,5,5">Hierarchy</Label>
+				<Label Opacity="100" HorizontalAlignment="Right" HorizontalContentAlignment="Right" VerticalAlignment="Top" VerticalContentAlignment="Center" FontSize="12" Margin="5,5,5,5">CCNode Properties</Label>
+				
+				<Label Content="Edit CCLayer" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" VerticalAlignment="Stretch" FontSize="24" Margin="0,10,0,0"></Label>		
+				
+				<Panel Name="CCLayerPreview" HorizontalAlignment="Center" VerticalAlignment="Top" Width="854" Height="480" Margin="278,50,278,0" ZIndex="-69" Background="Black">
+					<Panel Name="CCLayerPanel" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+					</Panel>
+				</Panel>
+
+				<Panel HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,680,0,20">
+					<Button Click="OnCancelAch" Width="150" Height="40" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="-165,0,0,0">Cancel</Button>
+					<Button Click="OnSaveAch" Width="150" Height="40" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="165,0,0,0">Save</Button>
+				</Panel>
+			</Panel>
+		</Panel>
+		
+		<Panel Name="TitleBar" HorizontalAlignment="Stretch" VerticalAlignment="Top" ZIndex="42069" Height="30" Background="#222222" IsHitTestVisible="False" Margin="0,-30,0,0">
+			<Image Name="Icon" Source="/Assets/icon.png" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,5,0,0"></Image>
+			<Label Name="Title" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="12" Margin="0,5,0,0">Project Name - Geode Studio</Label>
+
+			<DockPanel Name="MenuBar" Background="#00000000" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="35,-32,100,0">
+				<Menu DockPanel.Dock="Top">
+
+					<MenuItem Header="_File">
+						<MenuItem Header="_Open..."/>
+						<Separator/>
+						<MenuItem Header="_Exit"/>
+					</MenuItem>
+
+					<MenuItem Header="_Edit">
+						<MenuItem Header="Root" Click="GoRoot"/>
+						<MenuItem Header="Back" Click="GoBack"/>
+						<MenuItem Header="Copy"/>
+						<MenuItem Header="Paste"/>
+						<MenuItem Header="Cut"/>
+					</MenuItem>
+
+					<MenuItem Header="_View">
+						<MenuItem Header="Copy"/>
+						<MenuItem Header="Paste"/>
+					</MenuItem>
+
+				</Menu>
+				<TextBlock/>
+			</DockPanel>
+		</Panel>
+	</Panel>
+</Window>

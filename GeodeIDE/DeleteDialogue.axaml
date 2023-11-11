@@ -1,0 +1,27 @@
+<Window xmlns="https://github.com/avaloniaui"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="270"
+x:Class="GeodeIDE.DeleteDialogue"
+WindowStartupLocation="CenterScreen"
+RequestedThemeVariant="Dark"
+Icon="/Assets/icon.png"
+Background="#222222"
+ExtendClientAreaToDecorationsHint="True"
+
+Title="Geode Studio">
+
+	<Panel Name="MainPanel" Background="#111111" Margin="0, 30, 0 0">
+
+		<Image Name="Icon" Source="/Assets/icon.png" Margin="2,-26,370,244"></Image>
+		<Label Name="Title" HorizontalAlignment="Left" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontSize="14" Margin="30,-35,0,236">Delete Directory</Label>
+		
+		<Button VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="150,10,110,10" Content="Delete" Click="OnDelete"></Button>
+		<Button VerticalAlignment="Bottom" HorizontalAlignment="Stretch" Margin="300,10,10,10" Content="Cancel" Click="OnCancel"></Button>
+
+		<TextBlock Name="Description" Margin="8, 10, 20, 20" ></TextBlock>
+
+	</Panel>
+	
+</Window>

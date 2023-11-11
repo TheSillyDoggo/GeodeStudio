@@ -1,0 +1,79 @@
+<Window xmlns="https://github.com/avaloniaui"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+mc:Ignorable="d" d:DesignWidth="680" d:DesignHeight="420"
+x:Class="GeodeIDE.MainWindow"
+WindowStartupLocation="CenterScreen"
+RequestedThemeVariant="Dark"
+Icon="/Assets/icon.png"
+Background="#111111"
+ExtendClientAreaToDecorationsHint="True"
+ExtendClientAreaChromeHints="NoChrome"
+CanResize="False"
+Title="Geode Studio">
+
+	<Panel Name="MainPanel" Background="#111111" Margin="0, 30, 0 0" SizeChanged="OnResized">
+
+		<Panel Name="LauncherPanel" IsVisible="False">
+			<Image HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,-30,0,0" Source="/Assets/ProjectsOutline.png" IsHitTestVisible="False"></Image>
+
+			<Label FontWeight="ExtraBlack" Foreground="#dda1dd" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,-5,20,20" FontSize="32">Geode Studio</Label>
+			
+			<TextBox Name="SearchProjects" Margin="30, 140, 550, 700" Watermark="Search Projects" TextChanged="SearchUpdated"></TextBox>
+			
+			<ListBox x:Name="ProjectList" Background="#131313" Margin="30, 170, 400, 30" SelectionChanged="ListClicked" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+				
+			</ListBox>
+			
+			<Label Name="Nothing" Margin="30, 170, 400, 30" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="75" FontSize="18">Nothing here yet :(</Label>
+
+			<Panel Name="Buttons" Margin="570, 170, 30, 30">
+				<Button Name="Create" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Foreground="#a8dec3" Margin="0,0,0,0">
+					<Button.Styles>
+						<Style>
+							<Style.Resources>
+								<SolidColorBrush x:Key="ThemeControlHighBrush">DarkRed</SolidColorBrush>
+								<SolidColorBrush x:Key="ButtonBackground">#131313</SolidColorBrush>
+								<SolidColorBrush x:Key="ButtonBackgroundPointerOver">#181818</SolidColorBrush>
+								<SolidColorBrush x:Key="ButtonBackgroundPressed">#131313</SolidColorBrush>
+							</Style.Resources>
+						</Style>
+					</Button.Styles>
+					<Label FontSize="18" Margin="-5, -3, 0, 0">Create a new Project</Label>
+				</Button>
+				<Button Name="Import" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Foreground="#dcd7a1" Margin="0,0,0,0">
+					<Button.Styles>
+						<Style>
+							<Style.Resources>
+								<SolidColorBrush x:Key="ThemeControlHighBrush">DarkRed</SolidColorBrush>
+								<SolidColorBrush x:Key="ButtonBackground">#131313</SolidColorBrush>
+								<SolidColorBrush x:Key="ButtonBackgroundPointerOver">#181818</SolidColorBrush>
+								<SolidColorBrush x:Key="ButtonBackgroundPressed">#131313</SolidColorBrush>
+							</Style.Resources>
+						</Style>
+					</Button.Styles>
+					<Label FontSize="18" Margin="-5, -3, 0, 0">Import from Directory</Label>
+				</Button>
+			</Panel>
+
+		</Panel>
+
+		<Panel Name="LoadingPanel" IsVisible="False">
+
+			<ProgressBar IsIndeterminate="True" HorizontalAlignment="Stretch" CornerRadius="0,0,0,0" Margin="300, 0, 300, 40" Height="3" VerticalAlignment="Center" />
+			<Label VerticalAlignment="Center" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center">Loading Project</Label>
+			
+		</Panel>
+
+		<Panel Name="IntroPanel" IsVisible="True" Margin="0,-30,0,0">
+			<Image HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Source="/Assets/LoadingOutlineNoButtons.png"  IsHitTestVisible="False"></Image>
+			<Label FontWeight="ExtraBlack" Foreground="#dda1dd" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,25,20,20" FontSize="32">Geode Studio</Label>
+			<Label FontWeight="ExtraBlack" Foreground="#c1e1a2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="25,25,25,25" FontSize="24">By TheSillyDoggo</Label>
+			<Label Name="LoadingInfo" FontWeight="ExtraBlack" Foreground="#dda3a6" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="20,20,20,20" FontSize="14">Loading Fonts</Label>
+		</Panel>
+
+
+	</Panel>
+	
+</Window>

@@ -1,0 +1,50 @@
+<Window xmlns="https://github.com/avaloniaui"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="405"
+x:Class="GeodeIDE.ChooseAssetDialogue"
+WindowStartupLocation="CenterScreen"
+RequestedThemeVariant="Dark"
+Icon="/Assets/icon.png"
+Background="#222222"
+ExtendClientAreaToDecorationsHint="True"
+
+Title="Geode Studio">
+
+	<Panel Name="MainPanel" Background="#111111" Margin="0, 30, 0, 0">
+
+		<Image Name="Icon" HorizontalAlignment="Left" VerticalAlignment="Top" Height="22" Source="/Assets/icon.png" Margin="4,-26,370,244"></Image>
+		<Label Name="Title" HorizontalAlignment="Left" VerticalAlignment="Top" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" FontSize="16" Margin="32,-27.5,0,236">Choose GD Resource</Label>
+		
+		<Button VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10,10,10,10" Width="150" Content="Cancel" Click="OnCancel"></Button>
+
+		<Label Name="LoadedInfo" HorizontalAlignment="Stretch" HorizontalContentAlignment="Right" VerticalContentAlignment="Top" FontSize="12" Margin="2,2,2,2">Loaded 100/100</Label>
+		<Button Width="120" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="2,2,2,2"></Button>
+		<Label Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Left" VerticalContentAlignment="Top" FontSize="12" Margin="4,2,2,2">Standalone</Label>
+		<Button Width="120" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="122,2,2,2"></Button>
+		<Label Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Left" VerticalContentAlignment="Top" FontSize="12" Margin="124,2,2,2">Sprite Sheet</Label>
+		<Button Width="120" Height="20" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="242,2,2,2"></Button>
+		<Label Width="120" HorizontalAlignment="Left" HorizontalContentAlignment="Left" VerticalContentAlignment="Top" FontSize="12" Margin="244,2,2,2">Project</Label>
+
+		<ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" AllowAutoHide="False" Margin="5,25,0,45">
+			<Panel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+				<StackPanel>
+					<UniformGrid Name="Buttons" Columns="7" Rows="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,0,20,0">
+						<Button></Button>
+					</UniformGrid>
+				</StackPanel>
+
+				<StackPanel>
+					<Panel Name="Fonts" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,0,20,0">
+						<Button></Button>
+					</Panel>
+				</StackPanel>
+			</Panel>
+		</ScrollViewer>
+		
+		<TextBox Name="SearchBox" Margin="10, 10, 10, 10" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="250" Watermark="Search Resources" TextChanged="UpdateSearch"></TextBox>
+
+	</Panel>
+	
+</Window>

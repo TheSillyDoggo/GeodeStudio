@@ -1,0 +1,80 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AssemblyName>Geode Studio</AssemblyName>
+    <Company>TheSillyDoggo</Company>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="AsyncImageLoader.Avalonia" Version="3.2.1" />
+    <PackageReference Include="Avalonia" Version="11.0.2" />
+    <PackageReference Include="Avalonia.Desktop" Version="11.0.2" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.2" />
+    <PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.2" />
+    <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="plist-cil" Version="2.2.0" />
+    <PackageReference Include="System.Windows.Extensions" Version="7.0.0" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\**" />
+    <AvaloniaResource Include="Fonts\**" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <None Remove="Assets\Achievement.png" />
+    <None Remove="Assets\AchievementIcon.png" />
+    <None Remove="Assets\bigFont-uhd.fnt" />
+    <None Remove="Assets\bigFont-uhd.png" />
+    <None Remove="Assets\chatFont-uhd.fnt" />
+    <None Remove="Assets\chatFont-uhd.png" />
+    <None Remove="Assets\FolderIcon.png" />
+    <None Remove="Assets\goldFont-uhd.fnt" />
+    <None Remove="Assets\goldFont-uhd.png" />
+    <None Remove="Assets\MissingIcon.png" />
+    <None Remove="Assets\Pusab.ttf" />
+    <None Remove="Assets\Quest.png" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <AvaloniaResource Include="Fonts\Pusab.ttf" />
+    <Resource Include="Fonts\Pusab.ttf" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Content Include="icon.ico" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Compile Update="ChooseAssetDialogue.axaml.cs">
+      <DependentUpon>ChooseAssetDialogue.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="CreateDialogue.axaml.cs">
+      <DependentUpon>CreateDialogue.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="DeleteDialogue.axaml.cs">
+      <DependentUpon>DeleteDialogue.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="RenameDialogue.axaml.cs">
+      <DependentUpon>RenameDialogue.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="ProjectWindow.axaml.cs">
+      <DependentUpon>ProjectWindow.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+</Project>
