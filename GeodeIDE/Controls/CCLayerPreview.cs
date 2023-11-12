@@ -53,13 +53,28 @@ namespace CustomControls
                         if (img != null)
                         {
                             if (node.enabled)
-                                context.DrawImage(img, new Rect(node.GetPositionForAlignment(true), new Size(node.GetSizeForAlignment().X, node.GetSizeForAlignment().Y)));
+                            {
+                                if (node.cclayer9sprite)
+                                    Draw9Sprite(img, new Rect(node.GetPositionForAlignment(true), new Size(node.GetSizeForAlignment().X, node.GetSizeForAlignment().Y)), context);
+                                else
+                                    context.DrawImage(img, new Rect(node.GetPositionForAlignment(true), new Size(node.GetSizeForAlignment().X, node.GetSizeForAlignment().Y)));
+                            }
                         }
                     }
                 }    
             }
 
             TopLevel.GetTopLevel(this).RequestAnimationFrame(delegate { InvalidateVisual(); });
+        }
+
+        public void Draw9Sprite(IImage image, Rect rect, DrawingContext context)
+        {
+            float scale = 0.5f;
+
+            context.DrawImage(image, new Rect(0,0, image.Size.Width / 3, image.Size.Height / 3), new Rect(rect.Position, new Size(image.Size.Width / 3, image.Size.Height / 3) * scale ));
+            context.DrawImage(image, new Rect(image.Size.Width / 3 * scale,0, image.Size.Width / 3, image.Size.Height / 3), new Rect(rect.Position + new Point(image.Size.Width / 3 * scale, 0), new Size(rect.Width - image.Size.Width / 3 * 2, image.Size.Height / 3) * scale ));
+
+            //context.DrawImage(image, new Rect(image.Size.Width / 3, 0, image.Size.Width / 3, image.Size.Height / 3), new Rect(rect.Position + new Point(rect.Width / 3, 0), new Size(rect.Width / 3, rect.Width / 3) ));
         }
 
         public void OnKeyUp(object? sender, KeyEventArgs e)

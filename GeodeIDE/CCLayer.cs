@@ -31,7 +31,7 @@ namespace GeodeIDE
 
             public string name = "Default Name";
 
-            public bool enabled, expandInHierarchy = false;
+            public bool enabled, expandInHierarchy = false, cclayer9sprite = false;
 
             public Point position, size, anchor;
 

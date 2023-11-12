@@ -109,6 +109,8 @@ namespace CustomControls
             {
                 //no more "Visual was invalidated during the render pass" >:)
             }
+
+            TopLevel.GetTopLevel(this).RequestAnimationFrame(delegate { InvalidateVisual(); });
         }
 
         public void AddToHierarchy(string name, int depth, bool hasChildren, bool expanded)

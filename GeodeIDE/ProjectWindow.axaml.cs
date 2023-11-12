@@ -455,7 +455,13 @@ namespace GeodeIDE
 
         public void HierarchySelectionChanged(object source, RoutedEventArgs args)
         {
-            EditLayer.SelectNode(Hierarch.Selected);
+            EditLayer.SelectNode(Hierarchy.Selected);
+        }
+
+        public void PropertiesValueChanged(object source, SelectionChangedEventArgs args)
+        {
+            if (ProjectManager.Get().layer != null)
+                EditLayer.UpdateText();
         }
 
 

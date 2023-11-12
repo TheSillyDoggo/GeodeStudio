@@ -31,9 +31,6 @@ namespace GeodeIDE
         {
             var wnd = ProjectManager.Get().window;
 
-            if (wnd.CCLayerPanel.Children.Count > 0)
-                wnd.CCLayerPanel.Children.Clear();
-
             try
             {
                 JObject rss = JObject.Parse(File.ReadAllText(path));
@@ -43,35 +40,22 @@ namespace GeodeIDE
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("probably an empty project so time to create one");
+                //probably an empty project so time to create one
 
                 ProjectManager.Get().layer = new CCLayer();
             }
 
             ProjectManager.Get().layer.name = Path.GetFileNameWithoutExtension(path);
 
-            hierarchy = wnd.Hierarch;
+            hierarchy = wnd.Hierarchy;
 
-            SelectNode(0, "");
-            UpdateHierarchy();
+            hierarchy.Selected = 0;
+
+            UpdateProperties();
         }
 
         public static void SelectNode(int nodeID)
         {
-            UpdateHierarchy();
-            UpdateProperties();
-        }
-
-        public static void SelectNode(int nodeID, string name)
-        {
-            if (name == ProjectManager.Get().layer.name)
-                hierarchy.Selected = 0;
-            else
-                hierarchy.Selected = nodeID;
-
-            Debug.WriteLine(nodeID);
-
-            UpdateHierarchy();
             UpdateProperties();
         }
 
@@ -180,6 +164,7 @@ namespace GeodeIDE
 
                 wnd.NodePanel.IsVisible = (ProjectManager.Get().layer.nodes[hierarchy.Selected - 1].type == CCLayer.CCNode.nType.Node);
                 wnd.LabelPanel.IsVisible = (ProjectManager.Get().layer.nodes[hierarchy.Selected - 1].type == CCLayer.CCNode.nType.Label);
+                wnd.SpriteType.SelectedIndex = ProjectManager.Get().layer.nodes[hierarchy.Selected - 1].cclayer9sprite ? 1 : 0;
             }
         }
 
@@ -253,6 +238,7 @@ namespace GeodeIDE
                 ProjectManager.Get().layer.nodes[hierarchy.Selected - 1].enabled = (bool)wnd.NodeEnabled.IsChecked;
                 ProjectManager.Get().layer.nodes[hierarchy.Selected - 1].alpha = float.Parse(wnd.AlphaInput.Text) / 255;
                 ProjectManager.Get().layer.nodes[hierarchy.Selected - 1].labelText = wnd.LabelText.Text;
+                ProjectManager.Get().layer.nodes[hierarchy.Selected - 1].cclayer9sprite = wnd.SpriteType.SelectedIndex == 1;
                 if (ProjectManager.Get().layer.nodes[hierarchy.Selected - 1].img != null)
                     ProjectManager.Get().layer.nodes[hierarchy.Selected - 1].img.Opacity = ProjectManager.Get().layer.nodes[hierarchy.Selected - 1].alpha;
             }
@@ -270,11 +256,6 @@ namespace GeodeIDE
             ProjectManager.Get().window.BG2.Margin = new Thickness(ProjectManager.Get().window.ClientSize.Width / 2 + (854 / 2), 0, 278, 0);
         }
 
-        public static void UpdateHierarchy()
-        {
-            ProjectManager.Get().window.Hierarch.InvalidateVisual();
-        }
-
         public static void UpdateSpriteSize()
         {
             if (Program.gdSheetAssets.ContainsKey(ProjectManager.Get().layer.nodes[hierarchy.Selected - 1].spriteName))
@@ -284,11 +265,11 @@ namespace GeodeIDE
 
                 if (v.ElementAt(0).Value)
                 {
-                    ProjectManager.Get().layer.nodes[hierarchy.Selected - 1].size = new Point(ProjectManager.Get().layer.nodes[hierarchy.Selected - 1].img.Source.Size.Height, ProjectManager.Get().layer.nodes[hierarchy.Selected - 1].img.Source.Size.Width);
+                    ProjectManager.Get().layer.nodes[hierarchy.Selected - 1].size = new Point(ProjectManager.Get().layer.nodes[hierarchy.Selected - 1].GetImage().Item1.Size.Height, ProjectManager.Get().layer.nodes[hierarchy.Selected - 1].GetImage().Item1.Size.Width);
                 }
                 else
                 {
-                    ProjectManager.Get().layer.nodes[hierarchy.Selected - 1].size = new Point(ProjectManager.Get().layer.nodes[hierarchy.Selected - 1].img.Source.Size.Width, ProjectManager.Get().layer.nodes[hierarchy.Selected - 1].img.Source.Size.Height);
+                    ProjectManager.Get().layer.nodes[hierarchy.Selected - 1].size = new Point(ProjectManager.Get().layer.nodes[hierarchy.Selected - 1].GetImage().Item1.Size.Width, ProjectManager.Get().layer.nodes[hierarchy.Selected - 1].GetImage().Item1.Size.Height);
                 }
             }
             else
@@ -304,8 +285,6 @@ namespace GeodeIDE
             var wnd = ProjectManager.Get().window;
 
             ProjectManager.Get().layer.nodes.Add(new CCLayer.CCNode() { position = new Point(0, 0), size = new Point(128, 128), anchor = new Point(0.5f, 0.5f), alignment = CCLayer.CCNode.Alignment.CENTER, name = "New Node", enabled=false });
-
-            UpdateHierarchy();
         }
     }
 }
