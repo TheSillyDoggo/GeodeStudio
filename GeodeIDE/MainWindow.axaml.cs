@@ -12,6 +12,10 @@ using Avalonia.Platform;
 using System;
 using System.Threading.Tasks;
 using Claunia.PropertyList;
+using Avalonia.Platform.Storage;
+using Avalonia.Media;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Newtonsoft.Json.Linq;
 
 namespace GeodeIDE
 {
@@ -31,13 +35,45 @@ namespace GeodeIDE
         {
             this.InitializeComponent();
 
-            projects = new List<ProjectItem>();
-            projects.Add(new ProjectItem { name = "ae", directory = "C:\\Users\\talgo\\Desktop\\Geode Studio Proj" });
+            if (a)
+            {
+                projects = new List<ProjectItem>();
 
-            UpdateList("");
-            //this.CanResize = false;
+                string roamingPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                string folderPath = Path.Combine(roamingPath, "GeodeStudio");
+                string dataPath = Path.Combine(folderPath, "projects.ini");
 
-            //this.RequestAnimationFrame(delegate { Prepare(); });
+                if (!Directory.Exists(folderPath))
+                    Directory.CreateDirectory(folderPath);
+
+                if (!File.Exists(dataPath))
+                    File.WriteAllText(dataPath, "");
+
+                Debug.WriteLine(dataPath);
+
+                if (File.ReadAllText(dataPath).Length > 1)
+                {
+                    foreach (var line in File.ReadAllText(dataPath).Split("\n"))
+                    {
+                        if (Directory.Exists(line))
+                        {
+                            if (File.Exists(Path.Combine(line, "mod.json")))
+                            {
+                                JObject rss = JObject.Parse(File.ReadAllText(Path.Combine(line, "mod.json")));
+
+                                projects.Add(new ProjectItem { name = (string)rss["modName"], directory = line });
+                            }
+                        }
+                        else
+                            Debug.WriteLine($"Missing path: {line}");
+                    }
+                }
+
+                ProjectPath.Text = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+                UpdateList("");
+            }
+
             Prepare();
         }
 
@@ -264,7 +300,7 @@ namespace GeodeIDE
 
                     #endregion
 
-                    await Task.Delay(100);
+                    await Task.Delay(10);
 
                     var b = new MainWindow();
                     b.Show();
@@ -293,14 +329,65 @@ namespace GeodeIDE
         public void OnResized(object source, SizeChangedEventArgs e)
         {
             SearchProjects.Margin = new Avalonia.Thickness(30, 140, ClientSize.Width - 30 - 300, 700);
-            Buttons.Margin = new Avalonia.Thickness(ClientSize.Width - 382, 170, 20, 30);
-            Create.Margin = new Avalonia.Thickness(0, 0, 0, (ClientSize.Height - 170 - 30) - 100);
-            Import.Margin = new Avalonia.Thickness(0, 75, 0, (ClientSize.Height - 170 - 30) - 175);
+            //Buttons.Margin = new Avalonia.Thickness(ClientSize.Width - 382, 170, 20, 30);
+            //Create.Margin = new Avalonia.Thickness(0, 0, 0, (ClientSize.Height - 170 - 30) - 100);
+            //Import.Margin = new Avalonia.Thickness(0, 75, 0, (ClientSize.Height - 170 - 30) - 175);
+            //Samples.Margin = new Avalonia.Thickness(0, 150, 0, (ClientSize.Height - 170 - 30) - 250);
         }
 
-        public void ButtonClicked(object source, RoutedEventArgs args)
+        public void CreateClicked(object source, RoutedEventArgs args)
         {
-            Debug.WriteLine("Click!");
+            LauncherPanel.IsVisible = false;
+            CreatePanel.IsVisible = true;
+        }
+
+        public void CreateBottomClicked(object source, RoutedEventArgs args)
+        {
+            if (((Button)source).Content == "Create")
+            {
+                string roamingPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                string folderPath = Path.Combine(roamingPath, "GeodeStudio");
+                string dataPath = Path.Combine(folderPath, "projects.ini");
+
+                File.WriteAllText(dataPath, File.ReadAllText(dataPath) + $"\n{Path.Combine(ProjectPath.Text, ProjectName.Text).Replace("/", "\\")}");
+
+                ProjectManager.Get().project = new ProjectItem() { name = ProjectName.Text, directory = Path.Combine(ProjectPath.Text, ProjectName.Text)};
+
+                Directory.CreateDirectory(Path.Combine(ProjectPath.Text, ProjectName.Text, "Assets"));
+
+                JObject s = new JObject();
+
+                s.Add("modName", ProjectName.Text);
+                s.Add("modAuthor", ProjectAuth.Text);
+
+                File.WriteAllText(Path.Combine(ProjectPath.Text, ProjectName.Text, "mod.json"), s.ToString());
+
+                LoadingPanel.IsVisible = true;
+                LauncherPanel.IsVisible = false;
+                ProjectManager.Get().LoadWindow(this);
+            }   
+            else
+            {
+                LauncherPanel.IsVisible = true;
+                CreatePanel.IsVisible = false;
+            }
+        }
+
+        public async void ChoosePath(object source, RoutedEventArgs args)
+        {
+            var topLevel = TopLevel.GetTopLevel(this);
+
+            // Start async operation to open the dialog.
+            var files = await topLevel.StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
+            {
+                Title = "Choose Project Root Path",
+                AllowMultiple = false
+            });
+
+            if (files.Count >= 1)
+            {
+                ProjectPath.Text = files[0].Path.AbsolutePath;
+            }
         }
 
         public void ListClicked(object source, SelectionChangedEventArgs args)
@@ -309,6 +396,45 @@ namespace GeodeIDE
             LoadingPanel.IsVisible = true;
             LauncherPanel.IsVisible = false;
             ProjectManager.Get().LoadWindow(this);
+        }
+
+        public void TextUpdated(object source, TextChangedEventArgs args)
+        {
+            string errorTxt = "";
+            bool red = false;
+
+            if (ProjectName.Text == null)
+            {
+                errorTxt = "Project Name cannot be empty";
+                red = true;
+            }
+            else
+            {
+                if (ProjectAuth.Text == null)
+                {
+                    errorTxt = "Project Author cannot be empty";
+                    red = true;
+                }
+                else
+                {
+                    if (ProjectName.Text != null)
+                    {
+                        if (Directory.Exists(Path.Combine(ProjectPath.Text, ProjectName.Text)))
+                        {
+                            errorTxt = $"Project Directory already exists.\nPath: {Path.Combine(ProjectPath.Text, ProjectName.Text).Replace("/", "\\")}";
+                            red = true;
+                        }
+                        else
+                        {
+                            errorTxt = $"Project will be saved to {Path.Combine(ProjectPath.Text, ProjectName.Text).Replace("/", "\\")}";
+                            red = false;
+                        }
+                    }
+                }
+            }
+
+            SavePath.Foreground = new SolidColorBrush(new Color(255, 255, (byte)(red ? 0 : 255), (byte)(red ? 0 : 255)));
+            SavePath.Content = errorTxt;
         }
 
         public void SearchUpdated(object source, TextChangedEventArgs args)

@@ -143,7 +143,7 @@ Title="Geode Studio">
 						</ContextMenu>
 					</Panel.ContextMenu>
 					
-					<ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Visible">
+					<ScrollViewer ScrollViewer.VerticalScrollBarVisibility="Auto">
 						<Panel Name="HierarchyScrollviewer" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 							<cc:Hierarchy Name="Hierarchy" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,0" ZIndex="1" Width="278" ChangedSelection="HierarchySelectionChanged"></cc:Hierarchy>
 						</Panel>

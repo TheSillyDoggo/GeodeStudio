@@ -29,24 +29,25 @@ Title="Geode Studio">
 			<Label Name="Nothing" Margin="30, 170, 400, 30" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="75" FontSize="18">Nothing here yet :(</Label>
 
 			<Panel Name="Buttons" Margin="570, 170, 30, 30">
-				<Button Name="Create" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BorderThickness="0" Foreground="#a8dec3" Margin="0,0,0,0">
+				<Button Name="Create" HorizontalAlignment="Right" VerticalAlignment="Top" BorderThickness="0" Width="350" Height="75" Margin="0,0,0,0" Click="CreateClicked">
 					<Button.Styles>
 						<Style>
 							<Style.Resources>
-								<SolidColorBrush x:Key="ThemeControlHighBrush">DarkRed</SolidColorBrush>
 								<SolidColorBrush x:Key="ButtonBackground">#131313</SolidColorBrush>
 								<SolidColorBrush x:Key="ButtonBackgroundPointerOver">#181818</SolidColorBrush>
 								<SolidColorBrush x:Key="ButtonBackgroundPressed">#131313</SolidColorBrush>
 							</Style.Resources>
 						</Style>
 					</Button.Styles>
-					<Label FontSize="18" Margin="-5, -3, 0, 0">Create a new Project</Label>
+					<TextBlock FontSize="18" Margin="-5, -3, 0, 0" IsHitTestVisible="False">
+						Create a new Project<LineBreak></LineBreak>
+						<Span FontSize="12">Creates a brand new project</Span>
+					</TextBlock>
 				</Button>
-				<Button Name="Import" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Foreground="#dcd7a1" Margin="0,0,0,0">
+				<Button Name="Import" HorizontalAlignment="Right" VerticalAlignment="Top" BorderThickness="0" Width="350" Height="75" Margin="0,85,0,0">
 					<Button.Styles>
 						<Style>
 							<Style.Resources>
-								<SolidColorBrush x:Key="ThemeControlHighBrush">DarkRed</SolidColorBrush>
 								<SolidColorBrush x:Key="ButtonBackground">#131313</SolidColorBrush>
 								<SolidColorBrush x:Key="ButtonBackgroundPointerOver">#181818</SolidColorBrush>
 								<SolidColorBrush x:Key="ButtonBackgroundPressed">#131313</SolidColorBrush>
@@ -55,8 +56,42 @@ Title="Geode Studio">
 					</Button.Styles>
 					<Label FontSize="18" Margin="-5, -3, 0, 0">Import from Directory</Label>
 				</Button>
+				<Button Name="Samples" HorizontalAlignment="Right" VerticalAlignment="Top" BorderThickness="0" Width="350" Height="75" Margin="0,170,0,0">
+					<Button.Styles>
+						<Style>
+							<Style.Resources>
+								<SolidColorBrush x:Key="ButtonBackground">#131313</SolidColorBrush>
+								<SolidColorBrush x:Key="ButtonBackgroundPointerOver">#181818</SolidColorBrush>
+								<SolidColorBrush x:Key="ButtonBackgroundPressed">#131313</SolidColorBrush>
+							</Style.Resources>
+						</Style>
+					</Button.Styles>
+					<Label FontSize="18" Margin="-5, -3, 0, 0">Sample Projects</Label>
+				</Button>
 			</Panel>
 
+		</Panel>
+
+		<Panel Name="CreatePanel" IsVisible="False">
+
+			<Image HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,-30,0,0" Source="/Assets/ProjectsOutline.png" IsHitTestVisible="False"></Image>
+
+			<Label FontWeight="ExtraBlack" Foreground="#dda1dd" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="25,-5,20,20" FontSize="32">Create a Project</Label>
+
+			<Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,110,20,20">Mod Name:</Label>
+			<TextBox Name="ProjectName" Margin="30, 140, 550, 700" HorizontalAlignment="Left" VerticalAlignment="Top" Watermark="Mod Name" Width="400" TextChanged="TextUpdated"></TextBox>
+
+			<Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,180,20,20">Mod Author:</Label>
+			<TextBox Name="ProjectAuth" Margin="30, 210, 550, 700" HorizontalAlignment="Left" VerticalAlignment="Top" Watermark="Mod Author" Width="400" TextChanged="TextUpdated"></TextBox>
+
+			<Label HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,250,20,20">Project Path:</Label>
+			<TextBox Name="ProjectPath" Margin="30, 280, 550, 700" HorizontalAlignment="Left" VerticalAlignment="Top" Watermark="Project Path" Width="400" TextChanged="TextUpdated"></TextBox>
+			<Button HorizontalAlignment="Left" VerticalAlignment="Top" Margin="445,281,0,0" Click="ChoosePath">Browse</Button>
+			<Label Name="SavePath" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="30,325,20,20">Project will be saved to </Label>
+
+			<Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="445,281,30,30" Width="120" Click="CreateBottomClicked">Create</Button>
+			<Button HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="445,281,160,30" Click="CreateBottomClicked">Cancel</Button>
+			
 		</Panel>
 
 		<Panel Name="LoadingPanel" IsVisible="False">

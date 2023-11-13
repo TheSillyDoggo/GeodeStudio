@@ -29,7 +29,6 @@
 
   <ItemGroup>
     <AvaloniaResource Include="Assets\**" />
-    <AvaloniaResource Include="Fonts\**" />
   </ItemGroup>
 
 
@@ -46,12 +45,6 @@
     <None Remove="Assets\MissingIcon.png" />
     <None Remove="Assets\Pusab.ttf" />
     <None Remove="Assets\Quest.png" />
-  </ItemGroup>
-
-
-  <ItemGroup>
-    <AvaloniaResource Include="Fonts\Pusab.ttf" />
-    <Resource Include="Fonts\Pusab.ttf" />
   </ItemGroup>
 
 
