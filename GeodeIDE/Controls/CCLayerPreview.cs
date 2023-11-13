@@ -47,8 +47,9 @@ namespace CustomControls
                 if (node.type == CCLayer.CCNode.nType.Node)
                 {
                     Matrix rotate = Matrix.CreateRotation((Math.PI / 180) * (off + node.rotation));
+                    context.PushTransform(rotate);
 
-                    using (context.PushTransform(rotate))
+                    using (context.PushOpacity(node.alpha))
                     {
                         if (img != null)
                         {
@@ -69,12 +70,22 @@ namespace CustomControls
 
         public void Draw9Sprite(IImage image, Rect rect, DrawingContext context)
         {
-            float scale = 0.5f;
+            float scale = 50;
 
-            context.DrawImage(image, new Rect(0,0, image.Size.Width / 3, image.Size.Height / 3), new Rect(rect.Position, new Size(image.Size.Width / 3, image.Size.Height / 3) * scale ));
-            context.DrawImage(image, new Rect(image.Size.Width / 3 * scale,0, image.Size.Width / 3, image.Size.Height / 3), new Rect(rect.Position + new Point(image.Size.Width / 3 * scale, 0), new Size(rect.Width - image.Size.Width / 3 * 2, image.Size.Height / 3) * scale ));
+            //Middle
+            context.DrawImage(image, new Rect(image.Size.Width / 3, image.Size.Height / 3, image.Size.Width / 3, image.Size.Height / 3), new Rect(rect.Position.X + scale, rect.Position.Y + scale, rect.Width - scale * 2, rect.Height - scale * 2));
 
-            //context.DrawImage(image, new Rect(image.Size.Width / 3, 0, image.Size.Width / 3, image.Size.Height / 3), new Rect(rect.Position + new Point(rect.Width / 3, 0), new Size(rect.Width / 3, rect.Width / 3) ));
+            //Corners
+            context.DrawImage(image, new Rect(0, 0, image.Size.Width / 3, image.Size.Height / 3), new Rect(rect.Position.X, rect.Position.Y, scale, scale));
+            context.DrawImage(image, new Rect(image.Size.Width / 3 * 2, 0, image.Size.Width / 3, image.Size.Height / 3), new Rect(rect.Position.X + rect.Width - scale, rect.Position.Y, scale, scale));
+            context.DrawImage(image, new Rect(0, image.Size.Height / 3 * 2, image.Size.Width / 3, image.Size.Height / 3), new Rect(rect.Position.X, rect.Position.Y + rect.Height - scale, scale, scale));
+            context.DrawImage(image, new Rect(image.Size.Width / 3 * 2, image.Size.Height / 3 * 2, image.Size.Width / 3, image.Size.Height / 3), new Rect(rect.Position.X + rect.Width - scale, rect.Position.Y + rect.Height - scale, scale, scale));
+
+            //Edges
+            context.DrawImage(image, new Rect(image.Size.Width / 3, 0, image.Size.Width / 3, image.Size.Height / 3), new Rect(rect.Position.X + scale, rect.Position.Y, rect.Width - scale * 2, scale));
+            context.DrawImage(image, new Rect(image.Size.Width / 3, image.Size.Height / 3 * 2, image.Size.Width / 3, image.Size.Height / 3), new Rect(rect.Position.X + scale, rect.Position.Y + rect.Height - scale, rect.Width - scale * 2, scale));
+            context.DrawImage(image, new Rect(0, image.Size.Height / 3, image.Size.Width / 3, image.Size.Height / 3), new Rect(rect.Position.X, rect.Position.Y + scale, scale, rect.Height - scale * 2));
+            context.DrawImage(image, new Rect(image.Size.Width / 3 * 2, image.Size.Height / 3, image.Size.Width / 3, image.Size.Height / 3), new Rect(rect.Position.X + rect.Width - scale, rect.Position.Y + scale, scale, rect.Height - scale * 2));
         }
 
         public void OnKeyUp(object? sender, KeyEventArgs e)
