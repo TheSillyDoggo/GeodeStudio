@@ -220,7 +220,7 @@ Title="Geode Studio">
 										<ComboBox Name="SpriteType" SelectionChanged="PropertiesValueChanged" SelectedIndex="0" FontSize="10" HorizontalContentAlignment="Left" ToolTip.Tip="The mode in which sprites render">
 
 											<ComboBoxItem FontSize="14" ToolTip.Tip="Simple sprite. Can be stretched and such">Simple</ComboBoxItem>
-											<ComboBoxItem FontSize="14" ToolTip.Tip="DOES NOT SHOW IN EDITOR! Splits the sprite into 9 sections to create sides and corners">9 Sprite</ComboBoxItem>
+											<ComboBoxItem FontSize="14" ToolTip.Tip="Splits the sprite into 9 sections to create sides and corners">9 Sprite</ComboBoxItem>
 										
 										</ComboBox>
 									</StackPanel>
@@ -290,11 +290,11 @@ Title="Geode Studio">
 			</Panel>
 		</Panel>
 		
-		<Panel Name="TitleBar" HorizontalAlignment="Stretch" VerticalAlignment="Top" ZIndex="42069" Height="30" Background="#222222" IsHitTestVisible="False" Margin="0,-30,0,0">
+		<Panel Name="TitleBar" HorizontalAlignment="Stretch" VerticalAlignment="Top" ZIndex="42069" Height="30" Background="#222222" Margin="0,-30,0,0">
 			<Image Name="Icon" Source="/Assets/icon.png" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="5,5,0,0"></Image>
 			<Label Name="Title" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="12" Margin="0,5,0,0">Project Name - Geode Studio</Label>
 
-			<DockPanel Name="MenuBar" Background="#00000000" VerticalAlignment="Top" HorizontalAlignment="Left" ZIndex="69420" Margin="35,-32,100,0">
+			<DockPanel Name="MenuBar" Background="#00000000" VerticalAlignment="Top" HorizontalAlignment="Left" ZIndex="69420" Margin="35,-2,100,0">
 				<Menu DockPanel.Dock="Top">
 
 					<MenuItem Header="_File">
@@ -309,6 +309,11 @@ Title="Geode Studio">
 						<MenuItem Header="Copy"/>
 						<MenuItem Header="Paste"/>
 						<MenuItem Header="Cut"/>
+					</MenuItem>
+
+					<MenuItem Header="_Build">
+						<MenuItem Header="Current Layer" Click="genTest"/>
+						<MenuItem Header="Paste"/>
 					</MenuItem>
 
 					<MenuItem Header="_View">

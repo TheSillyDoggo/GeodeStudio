@@ -162,7 +162,7 @@ namespace GeodeIDE
                     wnd.SpriteName.Content = ProjectManager.Get().layer.nodes[hierarchy.Selected - 1].spriteName;
                 }
 
-                wnd.NodePanel.IsVisible = (ProjectManager.Get().layer.nodes[hierarchy.Selected - 1].type == CCLayer.CCNode.nType.Node);
+                wnd.NodePanel.IsVisible = (ProjectManager.Get().layer.nodes[hierarchy.Selected - 1].type == CCLayer.CCNode.nType.Node) || (ProjectManager.Get().layer.nodes[hierarchy.Selected - 1].type == CCLayer.CCNode.nType.Button);
                 wnd.LabelPanel.IsVisible = (ProjectManager.Get().layer.nodes[hierarchy.Selected - 1].type == CCLayer.CCNode.nType.Label);
                 wnd.SpriteType.SelectedIndex = ProjectManager.Get().layer.nodes[hierarchy.Selected - 1].cclayer9sprite ? 1 : 0;
             }

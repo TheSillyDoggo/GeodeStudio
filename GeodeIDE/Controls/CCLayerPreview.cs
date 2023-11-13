@@ -44,7 +44,7 @@ namespace CustomControls
                 img = node.GetImage().Item1;
                 off = node.GetImage().Item2;
 
-                if (node.type == CCLayer.CCNode.nType.Node)
+                if (node.type == CCLayer.CCNode.nType.Node || node.type == CCLayer.CCNode.nType.Button)
                 {
                     Matrix rotate = Matrix.CreateRotation((Math.PI / 180) * (off + node.rotation));
                     context.PushTransform(rotate);

@@ -17,6 +17,7 @@ using Newtonsoft.Json.Linq;
 using AsyncImageLoader;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
+using VisualGeode.Exporter;
 
 namespace GeodeIDE
 {
@@ -38,7 +39,7 @@ namespace GeodeIDE
             Buttons.Columns = (int)(MathF.Floor((float)(ClientSize.Width) / 90));
             Buttons.Rows = (int)(MathF.Floor((float)(ClientSize.Height) / 90));
 
-            MenuBar.Margin = new Thickness(35, -32, ClientSize.Width - MenuBar.Bounds.Width - 35, 0);
+            //MenuBar.Margin = new Thickness(35, -32, ClientSize.Width - MenuBar.Bounds.Width - 35, 0);
 
             ButtonsStack.Height = MathF.Max((float)ClientSize.Height - (float)Buttons.Margin.Top - (float)Buttons.Margin.Bottom, ((MathF.Floor((Buttons.Children.Count / Buttons.Columns) + 1) - 1) * 90) + (float)Buttons.Margin.Bottom);
 
@@ -94,6 +95,11 @@ namespace GeodeIDE
             ProjectManager.Get().Directory = "";
 
             RefreshProject();
+        }
+
+        public void genTest(object sender, RoutedEventArgs e)
+        {
+            Debug.WriteLine(ExportLayer.CreateLayerH(ProjectManager.Get().layer));
         }
 
         public void GoBack(object sender, RoutedEventArgs e)

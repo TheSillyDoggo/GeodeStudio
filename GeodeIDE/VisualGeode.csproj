@@ -70,9 +70,4 @@
       <DependentUpon>ProjectWindow.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
-
-
-  <ItemGroup>
-    <Folder Include="Exporter\" />
-  </ItemGroup>
 </Project>

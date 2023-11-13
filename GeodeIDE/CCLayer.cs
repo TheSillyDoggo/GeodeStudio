@@ -24,6 +24,7 @@ namespace GeodeIDE
             public enum nType
             {
                 Node,
+                Button,
                 Label
             }
 
