@@ -18,6 +18,7 @@ using AsyncImageLoader;
 using Avalonia.Controls.Primitives;
 using Avalonia.Input;
 using VisualGeode.Exporter;
+using VisualGeode;
 
 namespace GeodeIDE
 {
@@ -495,6 +496,17 @@ namespace GeodeIDE
             string type = ((MenuItem)(source)).Header.ToString();
             Debug.WriteLine($"Creating Node of type {type}");
             EditLayer.CreateNode(type);
+        }
+
+        public void OnEditNode(object source, RoutedEventArgs args)
+        {
+            EditNodePanel.IsVisible = true;
+        }
+
+        public void TestButton(object source, RoutedEventArgs args)
+        {
+            //ProjectManager.Get().layer.graph.nodes.Add(new VisualGeode.NodeGraph.Node() { name = "aesa" });
+            ProjectManager.Get().layer.graph.nodes.Add(new GeneralNodes.setAnimationInterval());
         }
     }
 }

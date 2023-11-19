@@ -264,7 +264,9 @@ Title="Geode Studio">
 						</Panel>
 					</ScrollViewer>
 
-					<TextBlock Width="600" Name="PropertiesHelp" HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center">This is the layer options :3</TextBlock>
+					<Panel Name="PropertiesHelp">
+						<Button VerticalAlignment="Top" HorizontalAlignment="Left" Margin="15, 15, 15, 15" Click="OnEditNode">Edit Node Graph</Button>
+					</Panel>
 				</Panel>
 
 				<Panel HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="50" Margin="278,0,278,0" Background="#222222"></Panel>
@@ -288,6 +290,33 @@ Title="Geode Studio">
 					<Button Click="OnSaveAch" Width="150" Height="40" FontSize="22" HorizontalAlignment="Center" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Margin="165,0,0,0">Save</Button>
 				</Panel>
 			</Panel>
+		</Panel>
+
+		<Panel Name="EditNodePanel" Margin="0,0,0,0" IsVisible="False" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+			<cc:NodeViewer></cc:NodeViewer>
+
+			<Button Name="NodesPanel" IsVisible="False" Width="200" VerticalAlignment="Stretch" HorizontalAlignment="Left" Margin="15,15,15,15" IsHitTestVisible="False" Opacity="0.75">
+				<Button.Styles>
+					<Style>
+						<Style.Resources>
+							<SolidColorBrush x:Key="ButtonBackground">#222222</SolidColorBrush>
+						</Style.Resources>
+					</Style>
+				</Button.Styles>
+			</Button>
+			
+			<Button Name="NodeExpandButton" Width="50" Height="50" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="15,15,15,15" Opacity="1" Click="TestButton">
+				<Button.Styles>
+					<Style>
+						<Style.Resources>
+							<SolidColorBrush x:Key="ButtonBackground">#222222</SolidColorBrush>
+							<SolidColorBrush x:Key="ButtonBackgroundPointerOver">#242424</SolidColorBrush>
+							<SolidColorBrush x:Key="ButtonBackgroundPressed">#212121</SolidColorBrush>
+						</Style.Resources>
+					</Style>
+				</Button.Styles>
+				
+			</Button>
 		</Panel>
 		
 		<Panel Name="TitleBar" HorizontalAlignment="Stretch" VerticalAlignment="Top" ZIndex="42069" Height="30" Background="#222222" Margin="0,-30,0,0">

@@ -3,7 +3,6 @@ using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.VisualTree;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
@@ -14,6 +13,7 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using VisualGeode;
 
 namespace GeodeIDE
 {
@@ -101,7 +101,7 @@ namespace GeodeIDE
             {
                 //i wrote this at 11 - 12 pm and have no idea what most of this does
 
-                Point point;
+                Point point = new Point();
 
                 switch (alignment)
                 {
@@ -110,11 +110,6 @@ namespace GeodeIDE
                         {
                             point = new Point(854 / 2 + ((position.X / 1920) * 854), 480 / 2 + (position.Y / 1080 * 480));
                             point -= new Point((size.X / 1920 * 854) * anchor.X, -((size.Y / 1080 * 480) * anchor.Y));
-                        }
-                        else
-                        {
-                            point = new Point(854 / 2 - ((position.X / 1920) * 854), 480 - (position.Y / 1080 * 480));
-                            point -= new Point((size.X / 1920 * 854) * anchor.X, (size.Y / 1080 * 480) * anchor.Y);
                         }
                         break;
                     case Alignment.STRETCH:
@@ -128,22 +123,12 @@ namespace GeodeIDE
                             point = new Point(((position.X / 1920) * 854), 480 / 2 + (position.Y / 1080 * 480));
                             point -= new Point((size.X / 1920 * 854) * anchor.X, -((size.Y / 1080 * 480) * anchor.Y));
                         }
-                        else
-                        {
-                            point = new Point(854 / 2 - ((position.X / 1920) * 854), 480 - (position.Y / 1080 * 480));
-                            point -= new Point((size.X / 1920 * 854) * anchor.X, (size.Y / 1080 * 480) * anchor.Y);
-                        }
                         break;
                     case Alignment.RIGHT:
                         if (editor)
                         {
                             point = new Point(854 - ((position.X / 1920) * 854), 480 / 2 + (position.Y / 1080 * 480));
                             point -= new Point((size.X / 1920 * 854) * anchor.X, -((size.Y / 1080 * 480) * anchor.Y));
-                        }
-                        else
-                        {
-                            point = new Point(854 / 2 - ((position.X / 1920) * 854), 480 - (position.Y / 1080 * 480));
-                            point -= new Point((size.X / 1920 * 854) * anchor.X, (size.Y / 1080 * 480) * anchor.Y);
                         }
                         break;
                     case Alignment.TOP:
@@ -152,22 +137,12 @@ namespace GeodeIDE
                             point = new Point(854 / 2 + ((position.X / 1920) * 854), 480 - (position.Y / 1080 * 480));
                             point -= new Point((size.X / 1920 * 854) * anchor.X, -((size.Y / 1080 * 480) * anchor.Y));
                         }
-                        else
-                        {
-                            point = new Point(854 / 2 - ((position.X / 1920) * 854), 480 - (position.Y / 1080 * 480));
-                            point -= new Point((size.X / 1920 * 854) * anchor.X, (size.Y / 1080 * 480) * anchor.Y);
-                        }
                         break;
                     case Alignment.BOTTOM:
                         if (editor)
                         {
                             point = new Point(854 / 2 + ((position.X / 1920) * 854), position.Y / 1080 * 480);
                             point -= new Point((size.X / 1920 * 854) * anchor.X, -((size.Y / 1080 * 480) * anchor.Y));
-                        }
-                        else
-                        {
-                            point = new Point(854 / 2 + position.X, position.Y);
-                            point -= new Point((size.X / 1920 * 854) * anchor.X, (size.Y / 1080 * 480) * anchor.Y);
                         }
                        
                         break;
@@ -177,22 +152,12 @@ namespace GeodeIDE
                             point = new Point((position.X / 1920) * 854, 480 - (position.Y / 1080 * 480));
                             point -= new Point((size.X / 1920 * 854) * anchor.X, -((size.Y / 1080 * 480) * anchor.Y));
                         }
-                        else
-                        {
-                            point = new Point(position.X, 480 - position.Y);
-                            point -= new Point((size.X / 1920 * 854) * anchor.X, (size.Y / 1080 * 480) * anchor.Y);
-                        }
                         break;
                     case Alignment.BOTTOMLEFT:
                         if (editor)
                         {
                             point = new Point((position.X / 1920) * 854, position.Y / 1080 * 480);
                             point -= new Point((size.X / 1920 * 854) * anchor.X, -((size.Y / 1080 * 480) * anchor.Y));
-                        }
-                        else
-                        {
-                            point = new Point(position.X / 1920 * 854, position.Y / 1080 * 480);
-                            point -= new Point((size.X / 1920 * 854) * anchor.X, (size.Y / 1080 * 480) * anchor.Y);
                         }
                         break;
                     case Alignment.BOTTOMRIGHT:
@@ -201,22 +166,12 @@ namespace GeodeIDE
                             point = new Point(854 - ((position.X / 1920) * 854), position.Y / 1080 * 480);
                             point -= new Point((size.X / 1920 * 854) * anchor.X, -((size.Y / 1080 * 480) * anchor.Y));
                         }
-                        else
-                        {
-                            point = new Point(position.X / 1920 * 854, position.Y / 1080 * 480);
-                            point -= new Point((size.X / 1920 * 854) * anchor.X, (size.Y / 1080 * 480) * anchor.Y);
-                        }
                         break;
                     case Alignment.TOPRIGHT:
                         if (editor)
                         {
                             point = new Point(854 - ((position.X / 1920) * 854), 480 - (position.Y / 1080 * 480));
                             point -= new Point((size.X / 1920 * 854) * anchor.X, -((size.Y / 1080 * 480) * anchor.Y));
-                        }
-                        else
-                        {
-                            point = new Point(854 - position.X, 480 - position.Y);
-                            point -= new Point((size.X / 1920 * 854) * anchor.X, (size.Y / 1080 * 480) * anchor.Y);
                         }
                         break;
                     default:
@@ -232,6 +187,8 @@ namespace GeodeIDE
 
                 if (editor)
                     point = new Point(point.X, 480 - point.Y);
+                else
+                    point = new Point(position.X / 1920, position.Y / 1080);
 
                 return point;
             }
@@ -301,6 +258,7 @@ namespace GeodeIDE
         public bool expaned = false;
 
         public List<CCNode> nodes = new List<CCNode>();
+        public NodeGraph graph = new NodeGraph();
 
         public static Canvas CreateAsChildren(CCLayer layer)
         {

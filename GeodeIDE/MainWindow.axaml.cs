@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 using Claunia.PropertyList;
 using Avalonia.Platform.Storage;
 using Avalonia.Media;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Newtonsoft.Json.Linq;
 
 namespace GeodeIDE
@@ -179,122 +178,118 @@ namespace GeodeIDE
 
                     this.UpdateLayout();
 
-                    this.RequestAnimationFrame(delegate{
+                    foreach (var file in Directory.GetFiles(Program.GetGDResourcesPath(), "*.png").OrderBy(f => f))
+                    {
+                        string type = "";
 
-                        foreach (var file in Directory.GetFiles(Program.GetGDResourcesPath(), "*.png").OrderBy(f => f))
+                        if (Path.GetFileNameWithoutExtension(file).EndsWith("-hd"))
+                            type = "-hd";
+
+                        if (Path.GetFileNameWithoutExtension(file).EndsWith("-uhd"))
+                            type = "-uhd";
+
+                        if (!(Path.GetFileNameWithoutExtension(file).EndsWith("-hd") || Path.GetFileNameWithoutExtension(file).EndsWith("-uhd")))
+                            continue;
+
+                        if (Program.gdAssets.ContainsKey(file.Replace($"{type}.png", "")))
+                            continue;
+
+                        if (type != "-uhd")
                         {
-                            string type = "";
-
-                            if (Path.GetFileNameWithoutExtension(file).EndsWith("-hd"))
-                                type = "-hd";
-
-                            if (Path.GetFileNameWithoutExtension(file).EndsWith("-uhd"))
-                                type = "-uhd";
-
-                            if (!(Path.GetFileNameWithoutExtension(file).EndsWith("-hd") || Path.GetFileNameWithoutExtension(file).EndsWith("-uhd")))
+                            if (File.Exists(file.Replace($"{type}.png", "-uhd.png")))
                                 continue;
-
-                            if (Program.gdAssets.ContainsKey(file.Replace($"{type}.png", "")))
-                                continue;
-
-                            if (type != "-uhd")
-                            {
-                                if (File.Exists(file.Replace($"{type}.png", "-uhd.png")))
-                                    continue;
-                            }
-
-                            if (File.Exists(file.Replace(".png", ".plist")))
-                            {
-                                FileInfo fileSA = new FileInfo(file.Replace(".png", ".plist"));
-                                NSDictionary rootDict = (NSDictionary)PropertyListParser.Parse(fileSA);
-
-                                Stream strm = File.OpenRead(file);
-                                Bitmap bmpSS = new Bitmap(strm);
-
-                                foreach (var param in ((NSDictionary)rootDict.Get("frames")).GetDictionary())
-                                {
-                                    try
-                                    {
-                                        string textureRectV = ((NSDictionary)(param.Value)).Get("textureRect").ToString();
-
-                                        string texPos = textureRectV.Split(',')[0] + "," + textureRectV.Split(',')[1];
-                                        texPos = texPos.Remove(0, 2);
-                                        texPos = texPos.Remove(texPos.Length - 1, 1);
-                                        PixelPoint pos = new PixelPoint(int.Parse(texPos.Split(",".ToCharArray())[0]), int.Parse(texPos.Split(",".ToCharArray())[1]));
-
-                                        string texSize = textureRectV.Split(',')[2] + "," + textureRectV.Split(',')[3];
-                                        texSize = texSize.Remove(0, 1);
-                                        texSize = texSize.Remove(texSize.Length - 2, 2);
-                                        PixelSize size = new PixelSize(int.Parse(texSize.Split(",".ToCharArray())[0]), int.Parse(texSize.Split(",".ToCharArray())[1]));
-
-                                        bool rotated = false;
-
-                                        NSNumber num = (NSNumber)(((NSDictionary)(param.Value)).Get("textureRotated"));
-
-                                        if (num.isBoolean())
-                                        {
-                                            rotated = num.ToBool();
-                                        }
-
-                                        if (rotated)
-                                        {
-                                            size = new PixelSize(size.Height, size.Width);
-                                        }
-
-
-                                        CroppedBitmap cbmp = new CroppedBitmap(bmpSS, new PixelRect(pos, size));
-
-                                        if (!Program.gdSheetAssets.ContainsKey(param.Key.Replace(".png", "")))
-                                        {
-                                            var b = new Dictionary<CroppedBitmap, bool>(1);
-                                            b.Add(cbmp, rotated);
-                                            Program.gdSheetAssets.Add(param.Key.Replace(".png", ""), b);
-                                        }
-
-                                        Debug.WriteLine($"path: {file}\ntype: {type}\nname: {param.Key.Replace(".png", "")}\npos: {pos}\nsize: {texSize}\nsizeX: {size}\nrotated: {rotated}");
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        Debug.WriteLine($"Error with {param.Key}. {ex.Message} at {ex.StackTrace}");
-
-                                        continue;
-                                    }
-
-                                    /*
-                                    <key>GJLargeLock_001.png</key>
-                                    <dict>
-                                        <key>aliases</key>
-                                        <array/>
-                                        <key>spriteOffset</key>
-                                        <string>{0,0}</string>
-                                        <key>spriteSize</key>
-                                        <string>{60,73}</string>
-                                        <key>spriteSourceSize</key>
-                                        <string>{60,73}</string>
-                                        <key>textureRect</key>
-                                        <string>{{298,355},{60,73}}</string>
-                                        <key>textureRotated</key>
-                                        <true/>
-                                    </dict>
-                                    */
-                                }
-
-                                strm.Close();
-                                continue;
-                            }
-
-
-                            if (File.Exists(file.Replace(".png", ".fnt")))
-                                continue;
-
-                            Debug.WriteLine($"path: {file}\ntype: {type}\nname: {Path.GetFileNameWithoutExtension(file.Replace($"{type}.png", ""))}");
-
-                            Stream stream = File.OpenRead(file);
-                            Program.gdAssets.Add(Path.GetFileNameWithoutExtension(file.Replace($"{type}.png", "")), new Bitmap(stream));
-                            stream.Close();
                         }
 
-                    });
+                        if (File.Exists(file.Replace(".png", ".plist")))
+                        {
+                            FileInfo fileSA = new FileInfo(file.Replace(".png", ".plist"));
+                            NSDictionary rootDict = (NSDictionary)PropertyListParser.Parse(fileSA);
+
+                            Stream strm = File.OpenRead(file);
+                            Bitmap bmpSS = new Bitmap(strm);
+
+                            foreach (var param in ((NSDictionary)rootDict.Get("frames")).GetDictionary())
+                            {
+                                try
+                                {
+                                    string textureRectV = ((NSDictionary)(param.Value)).Get("textureRect").ToString();
+
+                                    string texPos = textureRectV.Split(',')[0] + "," + textureRectV.Split(',')[1];
+                                    texPos = texPos.Remove(0, 2);
+                                    texPos = texPos.Remove(texPos.Length - 1, 1);
+                                    PixelPoint pos = new PixelPoint(int.Parse(texPos.Split(",".ToCharArray())[0]), int.Parse(texPos.Split(",".ToCharArray())[1]));
+
+                                    string texSize = textureRectV.Split(',')[2] + "," + textureRectV.Split(',')[3];
+                                    texSize = texSize.Remove(0, 1);
+                                    texSize = texSize.Remove(texSize.Length - 2, 2);
+                                    PixelSize size = new PixelSize(int.Parse(texSize.Split(",".ToCharArray())[0]), int.Parse(texSize.Split(",".ToCharArray())[1]));
+
+                                    bool rotated = false;
+
+                                    NSNumber num = (NSNumber)(((NSDictionary)(param.Value)).Get("textureRotated"));
+
+                                    if (num.isBoolean())
+                                    {
+                                        rotated = num.ToBool();
+                                    }
+
+                                    if (rotated)
+                                    {
+                                        size = new PixelSize(size.Height, size.Width);
+                                    }
+
+
+                                    CroppedBitmap cbmp = new CroppedBitmap(bmpSS, new PixelRect(pos, size));
+
+                                    if (!Program.gdSheetAssets.ContainsKey(param.Key.Replace(".png", "")))
+                                    {
+                                        var e = new Dictionary<CroppedBitmap, bool>(1);
+                                        e.Add(cbmp, rotated);
+                                        Program.gdSheetAssets.Add(param.Key.Replace(".png", ""), e);
+                                    }
+
+                                    Debug.WriteLine($"path: {file}\ntype: {type}\nname: {param.Key.Replace(".png", "")}\npos: {pos}\nsize: {texSize}\nsizeX: {size}\nrotated: {rotated}");
+                                }
+                                catch (Exception ex)
+                                {
+                                    Debug.WriteLine($"Error with {param.Key}. {ex.Message} at {ex.StackTrace}");
+
+                                    continue;
+                                }
+
+                                /*
+                                <key>GJLargeLock_001.png</key>
+                                <dict>
+                                    <key>aliases</key>
+                                    <array/>
+                                    <key>spriteOffset</key>
+                                    <string>{0,0}</string>
+                                    <key>spriteSize</key>
+                                    <string>{60,73}</string>
+                                    <key>spriteSourceSize</key>
+                                    <string>{60,73}</string>
+                                    <key>textureRect</key>
+                                    <string>{{298,355},{60,73}}</string>
+                                    <key>textureRotated</key>
+                                    <true/>
+                                </dict>
+                                */
+                            }
+
+                            strm.Close();
+                            continue;
+                        }
+
+
+                        if (File.Exists(file.Replace(".png", ".fnt")))
+                            continue;
+
+                        Debug.WriteLine($"path: {file}\ntype: {type}\nname: {Path.GetFileNameWithoutExtension(file.Replace($"{type}.png", ""))}");
+
+                        Stream stream = File.OpenRead(file);
+                        Program.gdAssets.Add(Path.GetFileNameWithoutExtension(file.Replace($"{type}.png", "")), new Bitmap(stream));
+                        stream.Close();
+                    }
 
 
 

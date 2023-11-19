@@ -14,7 +14,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using Avalonia.Media.Imaging;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Newtonsoft.Json;
 using Avalonia.Platform;
 using CustomControls;

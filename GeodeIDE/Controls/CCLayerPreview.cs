@@ -11,6 +11,8 @@ using Avalonia.Media.Imaging;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Avalonia.Skia;
+using SkiaSharp;
 
 namespace CustomControls
 {
@@ -33,6 +35,7 @@ namespace CustomControls
                 return;
 
             this.context = context;
+
 
             foreach (var node in ProjectManager.Get().layer.nodes)
             {
